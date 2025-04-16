@@ -1,4 +1,4 @@
-# Deep Learning Model for Lung Cancer Classification
+****# Deep Learning Model for Lung Cancer Classification
 This is a depp learning model for lung cancer images classification trained with a dataset retrieved from Kaggle and originally published in arXiv, a free distribution service and open-source achive. 
 
 ## Dataset
@@ -104,19 +104,38 @@ The model architecture consists of the following layers:
 This model was compiled using the **categorical cross-entropy loss** function and optimized with **RMSprop** (learning rate = `2e-5`). The evaluation metrics included accuracy, precision, and recall.
 
 ### Upgraded Model
+
+The upgraded model is an **Enhanced Convolutional Neural Network (CNN)** architecture inspired by the design presented in the research article *“Deep learning-based approach to diagnose lung cancer using CT-scan images.”* This version significantly expands on the baseline architecture by introducing deeper feature extraction, more capacity, and overfitting prevention mechanisms. It is intended to improve classification accuracy across four lung tissue types: **adenocarcinoma**, **large cell carcinoma**, **squamous cell carcinoma**, and **normal**.
+
+The model architecture consists of the following layers:
+
+- **`Conv2D`**: The first layer applies **64 filters** of size `3x3` with ReLU activation. This layer captures fine-grained features from the input CT scan images.
+- **`MaxPooling2D`**: Reduces spatial dimensions (downsampling), helping the network generalize by retaining dominant features.
+- **`Conv2D`**: Applies **32 filters** of size `3x3` with ReLU activation to learn more abstract representations.
+- **`MaxPooling2D`**: Further downsamples the feature maps, aiding in spatial hierarchy learning and reducing overfitting risk.
+- **`Conv2D`**: Another layer with **32 filters** of size `3x3` and ReLU activation. This deepens the feature extraction pipeline.
+- **`Dropout`**: A dropout layer with a rate of **0.4**, randomly disabling 40% of neurons during training to reduce overfitting.
+- **`Flatten`**: Converts the multi-dimensional feature maps into a 1D feature vector to be fed into dense layers.
+- **`Dense`**: A fully connected layer with **256 units** and ReLU activation for high-level reasoning across learned features.
+- **`Dropout`**: A second dropout layer with a rate of **0.4**, again to prevent overfitting during training.
+- **`Dense`**: A secondary dense layer with **128 units** and ReLU activation to refine the feature space before classification.
+- **`Dense`**: The final layer includes **4 output units** with **softmax activation**, returning a probability distribution over the four target classes.
+
+The model is compiled with the **categorical cross-entropy** loss function and the **Adam optimizer** with a learning rate of `1e-3`. It evaluates performance using **accuracy**, **precision**, and **recall**.
+
+This enhanced architecture demonstrated **superior performance** in the referenced research, achieving **100% testing accuracy**, and is designed to improve generalization and robustness, especially in multi-class medical image classification tasks.
+
 ### Final Model
 
 ## Results
 
 ### First Model Performance
 
-After training for **10 epochs**, the first model demonstrated solid performance on both the validation and test datasets. Below are the key metrics:
+After training for **20 epochs**, the first model demonstrated solid performance on both the validation and test datasets. Below are the key metrics:
 
-- **Training Accuracy**: 89.83%
-- **Validation Accuracy**: 89.03%
-- **Test Accuracy**: 89.50%
-- **Training Loss**: 0.2424
-- **Validation Loss**: 0.2406
+- **Training Accuracy**: 90.74%
+- **Validation Accuracy**: 91.67%
+- **Test Accuracy**: 92.50%
 
 These results indicate that the model was able to generalize well without significant overfitting. The training and validation losses are closely aligned, and the test accuracy confirms the model's ability to correctly classify unseen CT scan images with high reliability.
 
@@ -135,25 +154,76 @@ The confusion matrix below shows the number of correct and incorrect predictions
 
 | Class                  | Precision | Recall | F1-Score | Support |
 | ---------------------- | --------- | ------ | -------- | ------- |
-| **Adenocarcinoma (0)** | 0.91      | 0.78   | 0.84     | 1000    |
-| **Benign (1)**         | 0.98      | 0.96   | 0.97     | 1000    |
-| **Squamous Cell (2)**  | 0.82      | 0.96   | 0.89     | 1000    |
+| **Squamous Cell (0)**  | 0.86      | 0.92   | 0.89     | 1000    |
+| **Adenocarcinoma (1)** | 0.99      | 0.96   | 0.97     | 1000    |
+| **Benign (2)**         | 0.92      | 0.89   | 0.91     | 1000    |
 | **Accuracy**           |           |        | **0.90** | 3000    |
-| **Macro Avg**          | 0.91      | 0.90   | 0.90     | 3000    |
-| **Weighted Avg**       | 0.91      | 0.90   | 0.90     | 3000    |
 
 These metrics indicate that:
-- The model performs **exceptionally well** in identifying benign samples (precision = 0.98, recall = 0.96).
-- It struggles slightly with differentiating between adenocarcinoma and squamous cell carcinoma, which may be due to visual similarity in some CT scan features.
-- The overall **accuracy** is **90%**, with a balanced **macro average F1-score of 0.90**, confirming the model’s robustness across classes.
 
-This detailed evaluation supports the conclusion that the model has strong generalization capabilities and can serve as a solid foundation for further improvement.
+- The model performs **exceptionally well** in identifying **Adenocarcinoma** cases, with a **precision of 0.99** and **recall of 0.96**, suggesting high reliability in detecting this cancer type.
+- Performance on **Benign** samples is also strong (**F1-score: 0.91**), indicating effective discrimination from malignant tissues.
+- **Squamous Cell Carcinoma** detection shows a **recall of 0.92**, but the **precision drops to 0.86**, largely due to a **notable number of false negatives** — **106 samples** misclassified as benign, as seen in the confusion matrix.
 
-> The support column in the classification report represents the number of true instances (or samples) for each class in the test dataset. It's essentially the size of the test set for each class, which helps to give context to the precision, recall, and F1-score.
+> ⚠️ These false negatives are especially problematic, as they represent **malignant tumors wrongly identified as non-cancerous**, which could lead to **missed or delayed treatments** in a real-world clinical scenario.
 
+- The overall **accuracy of 90%** and **macro average F1-score of 0.92** reflect robust generalization and balanced performance across the classes.
+
+### 🔍 Considerations for Future Improvements
+
+This analysis highlights the need for further refinement, especially in reducing false negatives for **Squamous Cell Carcinoma**. Future efforts could explore:
+
+- **Data augmentation** focused on squamous cell features to improve representation during training.
+- **Class rebalancing or weighted loss functions** to penalize misclassification of malignant cases more heavily.
+- **Ensemble methods or attention mechanisms** to enhance the model’s focus on subtle visual patterns differentiating cancer types from benign tissue.
+
+> **Note**: The "Support" column represents the number of true instances for each class in the test set. This helps contextualize the performance metrics and interpret the impact of misclassifications.
 
 
 ### Upgraded Model Performance
+After training for **20 epochs**, the first model demonstrated solid performance on both the validation and test datasets. Below are the key metrics:
+
+- **Training Accuracy**: 91.71%
+- **Validation Accuracy**: 94.83%
+- **Test Accuracy**: 95.62%
+
+These results indicate that the model was able to generalize well without significant overfitting. The training and validation losses are closely aligned, and the test accuracy confirms the model's ability to correctly classify unseen CT scan images with high reliability.
+
+### Evaluation Metrics
+
+To further assess the performance of the model, we computed detailed classification metrics using the test dataset. The following confusion matrix and classification report provide insights into how well the model performed for each class:
+
+#### Confusion Matrix
+
+The confusion matrix below shows the number of correct and incorrect predictions made by the model for each class:
+
+![Confusion Matrix First Model](/assets/model_2.png)
+
+
+#### Classification Report
+
+| Class                  | Precision | Recall | F1-Score | Support |
+| ---------------------- | --------- | ------ | -------- | ------- |
+| **Squamous Cell (0)**  | 0.92      | 0.94   | 0.93     | 1000    |
+| **Adenocarcinoma (1)** | 1.00      | 1.00   | 1.00     | 1000    |
+| **Benign (2)**         | 0.95      | 0.92   | 0.93     | 1000    |
+| **Accuracy**           |           |        | **0.95** | 3000    |
+
+
+These metrics indicate that:
+
+- The model now performs **exceptionally well** on **Adenocarcinoma**, achieving **perfect precision and recall (1.00)**. This means every Adenocarcinoma case was correctly identified without a single false positive or false negative — a **significant improvement** over the first model.
+
+- **Benign** cases show improved precision (**0.95**) and a recall of **0.92**, indicating fewer benign samples are being misclassified as malignant compared to the first model. Notably, the number of **false positives from benign to squamous cell carcinoma** dropped from 106 to 81, improving diagnostic safety.
+
+- **Squamous Cell Carcinoma** detection has also improved, with both **precision (0.92)** and **recall (0.94)** increasing. The confusion matrix shows only **4 cases misclassified as adenocarcinoma**, and **53 as benign** — a reduction from 78 benign misclassifications in the first model. This directly addresses one of the biggest weaknesses in the original model.
+
+> ✅ These improvements indicate the upgraded model is **more reliable in distinguishing malignant from benign tissue**, especially for Squamous Cell Carcinoma, where false negatives were previously a concern.
+
+- The overall **accuracy increased from 90% to 95%**, and the **macro average F1-score rose to 0.95**, reflecting a **more balanced and robust performance across all classes**.
+
+
+
 ### Final Model Performance
 
 ## Bibliography
