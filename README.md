@@ -1,4 +1,4 @@
-****# Deep Learning Model for Lung Cancer Classification
+# Deep Learning Model for Lung Cancer Classification
 This is a depp learning model for lung cancer images classification trained with a dataset retrieved from Kaggle and originally published in arXiv, a free distribution service and open-source achive. 
 
 ## Dataset
