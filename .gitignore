@@ -175,3 +175,5 @@ cython_debug/
 .pypirc
 
 dataset
+models
+predictions
