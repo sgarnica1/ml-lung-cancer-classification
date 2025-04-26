@@ -1,5 +1,5 @@
 # Deep Learning Model for Lung Cancer Classification
-This is a depp learning model for lung cancer images classification trained with a dataset retrieved from Kaggle and originally published in arXiv, a free distribution service and open-source achive. 
+This is a deep learning model for lung cancer images classification trained with a dataset retrieved from Kaggle and originally published in arXiv, a free distribution service and open-source achive. 
 
 ## Dataset
 The original dataset was published by arXiv.org and consists of 25,000 images with 5 different classes of 5,000 images each and two main subclasses: colon and lung images. 
@@ -126,6 +126,7 @@ The model is compiled with the **categorical cross-entropy** loss function and t
 This enhanced architecture demonstrated **superior performance** in the referenced research, achieving **100% testing accuracy**, and is designed to improve generalization and robustness, especially in multi-class medical image classification tasks.
 
 ### Final Model
+The final model maintained the same architecture as the second (upgraded) model, which had already demonstrated near-optimal performance. Rather than redesigning the architecture, efforts focused on hyperparameter tuning to extract the maximum performance from the existing structure.
 
 ## Results
 
@@ -139,7 +140,7 @@ After training for **20 epochs**, the first model demonstrated solid performance
 
 These results indicate that the model was able to generalize well without significant overfitting. The training and validation losses are closely aligned, and the test accuracy confirms the model's ability to correctly classify unseen CT scan images with high reliability.
 
-### Evaluation Metrics
+#### Evaluation Metrics
 
 To further assess the performance of the model, we computed detailed classification metrics using the test dataset. The following confusion matrix and classification report provide insights into how well the model performed for each class:
 
@@ -169,7 +170,7 @@ These metrics indicate that:
 
 - The overall **accuracy of 90%** and **macro average F1-score of 0.92** reflect robust generalization and balanced performance across the classes.
 
-### 🔍 Considerations for Future Improvements
+#### 🔍 Considerations for Future Improvements
 
 This analysis highlights the need for further refinement, especially in reducing false negatives for **Squamous Cell Carcinoma**. Future efforts could explore:
 
@@ -181,7 +182,7 @@ This analysis highlights the need for further refinement, especially in reducing
 
 
 ### Upgraded Model Performance
-After training for **20 epochs**, the first model demonstrated solid performance on both the validation and test datasets. Below are the key metrics:
+After training for **20 epochs**, the upgraded model demonstrated solid performance on both the validation and test datasets. Below are the key metrics:
 
 - **Training Accuracy**: 91.71%
 - **Validation Accuracy**: 94.83%
@@ -189,7 +190,7 @@ After training for **20 epochs**, the first model demonstrated solid performance
 
 These results indicate that the model was able to generalize well without significant overfitting. The training and validation losses are closely aligned, and the test accuracy confirms the model's ability to correctly classify unseen CT scan images with high reliability.
 
-### Evaluation Metrics
+#### Evaluation Metrics
 
 To further assess the performance of the model, we computed detailed classification metrics using the test dataset. The following confusion matrix and classification report provide insights into how well the model performed for each class:
 
@@ -222,9 +223,48 @@ These metrics indicate that:
 
 - The overall **accuracy increased from 90% to 95%**, and the **macro average F1-score rose to 0.95**, reflecting a **more balanced and robust performance across all classes**.
 
-
-
 ### Final Model Performance
+After training for **120 epochs**, the final model demonstrated solid performance on both the validation and test datasets too. Below are the key metrics:
+
+- **Training Accuracy**: 97.81%
+- **Validation Accuracy**: 99.00%
+- **Test Accuracy**: 99.75%
+
+These results indicate that the model was able to generalize well and as expecteed without overfitting. The training and validation losses are closely aligned, and the test accuracy confirms the model's ability to correctly classify unseen CT scan images with high reliability.
+
+#### Evaluation Metrics
+
+To further assess the performance of the model, we computed detailed classification metrics using the test dataset. The following confusion matrix and classification report provide insights into how well the model performed for each class:
+
+#### Confusion Matrix
+
+The confusion matrix below shows the number of correct and incorrect predictions made by the model for each class:
+
+![Confusion Matrix First Model](/assets/model_2.png)
+
+
+#### Classification Report
+
+| Class                  | Precision | Recall | F1-Score | Support |
+| ---------------------- | --------- | ------ | -------- | ------- |
+| **Squamous Cell (0)**  | 0.99      | 0.99   | 0.99     | 1000    |
+| **Adenocarcinoma (1)** | 1.00      | 1.00   | 1.00     | 1000    |
+| **Benign (2)**         | 1.00      | 0.99   | 0.99     | 1000    |
+| **Accuracy**           |           |        | **0.99** | 3000    |
+
+
+#### Key Findings
+- The model achieves **exceptional performance** with an overall **accuracy of 99%** across 3000 test samples.
+- **Adenocarcinoma (Class 1)** detection is **perfect** with both precision and recall at **1.00**. This means every adenocarcinoma case was correctly identified without any false positives or false negatives.
+- **Squamous Cell Carcinoma (Class 0)** shows excellent performance with both precision and recall at **0.99**, indicating very few misclassifications involving this cancer type.
+- **Benign tissue (Class 2)** classification demonstrates outstanding results with **perfect precision (1.00)** and very high recall **(0.99)**. This means the model never misclassifies malignant cases as benign (critical for patient safety) and only misses identifying about 1% of benign cases.
+- The consistently high **F1-scores (0.99-1.00)** across all classes demonstrate that the model maintains an excellent balance between precision and recall, regardless of tissue type.
+
+#### Implications
+- The model provides highly reliable diagnostic support for distinguishing between these tissue types.
+- The near-perfect performance in identifying malignancies minimizes the risk of missed cancer diagnoses.
+- With such high precision for benign classification, the model helps avoid unnecessary treatments for patients without cancer.
+
 
 ## Bibliography
 For the development of this project, the following article served as a key reference and foundation:
